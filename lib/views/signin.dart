@@ -3,6 +3,7 @@ import 'package:college_chat/services/auth.dart';
 import 'package:college_chat/widgets/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'chatRoomsScreen.dart';
 
 class SignIn extends StatefulWidget {
 
@@ -14,9 +15,30 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-
+  
+  bool isLoading = false;
 
   AuthMethods authMethods = new AuthMethods();
+  final formKey = GlobalKey<FormState>();
+  TextEditingController emailTextEditingController = new TextEditingController();
+  TextEditingController passwordTextEditingController = new TextEditingController();
+
+  signMeIn(){
+    if(formKey.currentState.validate()){
+      setState(() {
+        isLoading = true;
+      });
+      authMethods.signInWithEmailAndPassword(emailTextEditingController.text, passwordTextEditingController.text).then((value){
+        //print("${val.uid}");
+
+        Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) => ChatRoom()
+        ),
+        );
+
+      }); //setState
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +54,9 @@ class _SignInState extends State<SignIn> {
         elevation: 0,
         backgroundColor: VERY_DARK_BLUE,
       ),
-      body: Row(
+      body:isLoading ? Container(
+        child: Center(child: CircularProgressIndicator()),
+      ) : Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
@@ -48,51 +72,69 @@ class _SignInState extends State<SignIn> {
                 Container(
                   child: Column(
                     children: [
-                      TextField(
-                        style: simpleTextStyle(),
-                        decoration: textFieldInputDecoration("email"),
-                      ),
-                      TextField(
-                        style: simpleTextStyle(),
-                        decoration: textFieldInputDecoration("password"),
-                      ),
-                      SizedBox(height: 8,),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: (
-
-                              ) {
-                          },
-                          child: Text("Forgot Password?", style: simpleTextStyle(),),
-                        ),
-                      ),
-                      SizedBox(height: 8,),
-                      ElevatedButton(onPressed: (){},
-                        style: ElevatedButton.styleFrom(
-                          primary: STRONG_CYAN,
-                          elevation: 5,
-                          shadowColor: DARK_GREYISH_BLUE,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                             ),
-                          padding: EdgeInsets.symmetric(horizontal:100, vertical:18),
-                        ),
-                          child: Text("Sign In",style: mediumTextStyle(),
+                      Form(
+                        key: formKey,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                validator: (val){
+                                  return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                      .hasMatch(val) ? null: "Please Provide a Valid Email";
+                                },
+                                controller: emailTextEditingController,
+                                style: simpleTextStyle(),
+                                decoration: textFieldInputDecoration("email"),
+                              ),
+                              TextFormField(
+                                obscureText: true,
+                                validator: (val){
+                                  return val.length > 6 ? null : "The password must be greater than 6 characters";
+                                },
+                                controller: passwordTextEditingController,
+                                style: simpleTextStyle(),
+                                decoration: textFieldInputDecoration("password"),
+                              ),
+                              SizedBox(height: 8,),
+                              Container(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {
+                                    authMethods.resetPass(emailTextEditingController.text);
+                                  },
+                                  child: Text("Forgot Password?", style: simpleTextStyle(),),
+                                ),
+                              ),
+                              SizedBox(height: 8,),
+                              ElevatedButton(onPressed:signMeIn,
+                                style: ElevatedButton.styleFrom(
+                                  primary: STRONG_CYAN,
+                                  elevation: 5,
+                                  shadowColor: DARK_GREYISH_BLUE,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                     ),
+                                  padding: EdgeInsets.symmetric(horizontal:100, vertical:18),
+                                ),
+                                  child: Text("Sign In",style: mediumTextStyle(),
+                                  ),
+                              ),
+                              SizedBox(height: 8,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Don't have account?",style: TextStyle(fontSize: 18,color: WHITE),),
+                                  TextButton(onPressed: (){
+                                    widget.toggle();
+                                  },
+                                    child: Text("Register Now",style: TextStyle(fontSize: 18,color: Colors.greenAccent,decoration: TextDecoration.underline),),),
+                                ],
+                              ),
+                              SizedBox(height: 30,),
+                            ],
                           ),
+                        ),
                       ),
-                      SizedBox(height: 8,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Don't have account?",style: TextStyle(fontSize: 18,color: WHITE),),
-                          TextButton(onPressed: (){
-                            widget.toggle();
-                          },
-                            child: Text("Register Now",style: TextStyle(fontSize: 18,color: Colors.greenAccent,decoration: TextDecoration.underline),),),
-                        ],
-                      ),
-                      SizedBox(height: 30,),
                     ],
                   ),
                 )
