@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "567390716702",
+    "project_id": "college-chat-2db5f",
+    "storage_bucket": "college-chat-2db5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567390716702:android:dec68ec4f8ce53dc7fff0f",
+        "android_client_info": {
+          "package_name": "com.sohailalekar.college_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567390716702-q1qnkmdiedhfdbce79nctmid2n7tkn4s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-4myE-0gbDZi9kKmo343Q_YqndnLJ1Qw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567390716702-q1qnkmdiedhfdbce79nctmid2n7tkn4s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
