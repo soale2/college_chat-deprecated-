@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_chat/constants/colors.dart';
+import 'package:college_chat/helper/helperfunctions.dart';
 import 'package:college_chat/services/auth.dart';
+import 'package:college_chat/services/database.dart';
 import 'package:college_chat/widgets/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,22 +22,37 @@ class _SignInState extends State<SignIn> {
   bool isLoading = false;
 
   AuthMethods authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
   final formKey = GlobalKey<FormState>();
   TextEditingController emailTextEditingController = new TextEditingController();
   TextEditingController passwordTextEditingController = new TextEditingController();
 
-  signMeIn(){
+  QuerySnapshot snapshotUserInfo;
+
+  signIn(){
     if(formKey.currentState.validate()){
+      HelperFunctions.saveUserEmailPreference(emailTextEditingController.text);
+
+      databaseMethods.getUserByUserEmail(emailTextEditingController.text)
+          .then((val){
+        snapshotUserInfo = val;
+        HelperFunctions.saveUserEmailPreference(snapshotUserInfo.docs[0].data()["name"]);
+      });
+
       setState(() {
         isLoading = true;
       });
-      authMethods.signInWithEmailAndPassword(emailTextEditingController.text, passwordTextEditingController.text).then((value){
+      
+      authMethods.signInWithEmailAndPassword(emailTextEditingController.text, passwordTextEditingController.text).then((val){
         //print("${val.uid}");
+        if(val != null){
 
-        Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => ChatRoom()
-        ),
-        );
+          HelperFunctions.saveUserLoggedInPreference(true);
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) => ChatRoom(),
+          ),
+          );
+        }
 
       }); //setState
     }
@@ -106,7 +124,7 @@ class _SignInState extends State<SignIn> {
                                 ),
                               ),
                               SizedBox(height: 8,),
-                              ElevatedButton(onPressed:signMeIn,
+                              ElevatedButton(onPressed:signIn,
                                 style: ElevatedButton.styleFrom(
                                   primary: STRONG_CYAN,
                                   elevation: 5,

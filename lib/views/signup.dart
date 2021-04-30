@@ -1,5 +1,7 @@
 import 'package:college_chat/constants/colors.dart';
+import 'package:college_chat/helper/helperfunctions.dart';
 import 'package:college_chat/services/auth.dart';
+import 'package:college_chat/services/database.dart';
 import 'package:college_chat/views/chatRoomsScreen.dart';
 import 'package:college_chat/widgets/widget.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class _SignUpState extends State<SignUp> {
   bool isLoading = false;
 
   AuthMethods authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   final formKey = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController = new TextEditingController();
@@ -25,12 +28,22 @@ class _SignUpState extends State<SignUp> {
 
   signMeUp(){
     if(formKey.currentState.validate()){
+      Map<String, String> userInfoMap = {
+        "name" : userNameTextEditingController.text,
+        "email": emailTextEditingController.text
+      };
+
+      HelperFunctions.saveUserEmailPreference(emailTextEditingController.text);
+      HelperFunctions.saveUserEmailPreference(userNameTextEditingController.text);
+
       setState(() {
         isLoading = true;
       });
       authMethods.signUpWithEmailAndPassword(emailTextEditingController.text, passwordTextEditingController.text).then((val){
         //print("${val.uid}");
-        
+
+        databaseMethods.uploadUserInfo(userInfoMap);
+        HelperFunctions.saveUserLoggedInPreference(true);
         Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) => ChatRoom()
         ),

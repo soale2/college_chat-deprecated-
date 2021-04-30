@@ -1,5 +1,7 @@
 import 'package:college_chat/constants/colors.dart';
 import 'package:college_chat/helper/authenticate.dart';
+import 'package:college_chat/helper/constants.dart';
+import 'package:college_chat/helper/helperfunctions.dart';
 import 'package:college_chat/services/auth.dart';
 import 'package:college_chat/views/search.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,16 @@ class ChatRoom extends StatefulWidget {
 class _ChatRoomState extends State<ChatRoom> {
 
   AuthMethods authMethods = new AuthMethods();
+
+  @override
+  void initState() {
+    getUserInfo();
+    super.initState();
+  }
+
+  getUserInfo() async{
+    Constants.myName = await HelperFunctions.getUserNamePreference();
+  }
 
   @override
   Widget build(BuildContext context) {
