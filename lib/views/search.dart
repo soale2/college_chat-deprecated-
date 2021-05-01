@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_chat/constants/colors.dart';
 import 'package:college_chat/helper/constants.dart';
+import 'package:college_chat/helper/helperfunctions.dart';
 import 'package:college_chat/services/database.dart';
 import 'package:college_chat/views/conversation_screen.dart';
 import 'package:college_chat/widgets/widget.dart';
@@ -12,12 +13,15 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
+String _myName;
+
 class _SearchScreenState extends State<SearchScreen> {
 
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController searchTextEditingController = new TextEditingController();
 
   QuerySnapshot searchSnapshot;
+
 
   Widget searchList(){
     return searchSnapshot != null ? ListView.builder(
@@ -39,7 +43,9 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
+
   createChatroomAndStartConversation({String userName}){
+    print("${Constants.myName}");
     if(userName != Constants.myName){
       String chatRoomId = getChatRoomId(userName, Constants.myName);
 
