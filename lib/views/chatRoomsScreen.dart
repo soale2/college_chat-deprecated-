@@ -4,6 +4,7 @@ import 'package:college_chat/helper/constants.dart';
 import 'package:college_chat/helper/helperfunctions.dart';
 import 'package:college_chat/services/auth.dart';
 import 'package:college_chat/services/database.dart';
+import 'package:college_chat/views/calendarScreen.dart';
 import 'package:college_chat/views/conversation_screen.dart';
 import 'package:college_chat/views/search.dart';
 import 'package:flutter/material.dart';
@@ -84,6 +85,37 @@ class _ChatRoomState extends State<ChatRoom> {
           ],
           elevation: 0,
           backgroundColor: VERY_DARK_BLUE,
+        ),
+        drawer: Drawer(
+          child: Container(
+            decoration: BoxDecoration(
+              color: DARK_GREYISH_BLUE,
+            ),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                DrawerHeader(child: Image.asset("assets/images/circle-logo.png",height: 235,width: 235,),
+                decoration: BoxDecoration(
+                  color: VERY_DARK_BLUE
+                ),
+                ),
+                ListTile(
+                  title: Text('Conversations',style: TextStyle(fontSize: 16,color: WHITE),),
+                  onTap: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) => ChatRoom()));
+                  },
+                ),
+                ListTile(
+                  title: Text('Timetable',style: TextStyle(fontSize: 16,color: WHITE),),
+                  onTap: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) => CalenderScreen()));
+                  },
+                )
+              ],
+            ),
+          ),
         ),
         body: chatRoomList(),
         floatingActionButton: FloatingActionButton(
