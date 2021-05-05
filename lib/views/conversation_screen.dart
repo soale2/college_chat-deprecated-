@@ -73,51 +73,41 @@ class _ConversationScreenState extends State<ConversationScreen> {
         child: Stack(
           children: [
             ChatMessageList(),
-            Container(
-              alignment: Alignment.bottomCenter,
+            Align(
+              alignment: Alignment.bottomLeft,
               child: Container(
+                padding: EdgeInsets.only(left: 10,bottom: 10,top: 10),
+                height: 60,
+                width: double.infinity,
                 color: DARK_GREYISH_BLUE,
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Row(
                   children: [
-                    Expanded(
-                      child: TextField(
-                        controller: messageController,
-                        style: TextStyle(
-                          color: STRONG_CYAN,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: "Message...",
-                          hintStyle: TextStyle(
-                            color: WHITE,
-                          ),
-                          border: InputBorder.none,
-                        ),
+                    Expanded(child: TextField(
+                      controller: messageController,
+                      style: TextStyle(
+                        color: STRONG_CYAN,
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: (){
-                       sendMessage();
-                      },
-                      child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [
-                                  VERY_DARK_BLUE,
-                                  DARK_GREYISH_BLUE
-                                ]
-                            ),
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          padding: EdgeInsets.all(12.0),
-                          child: Image.asset("assets/images/send.png")),
-                    ),
+                      decoration: InputDecoration(
+                        hintText: "Write Message...",
+                        hintStyle: TextStyle(
+                          color: STRONG_CYAN,
+                      ),
+                        border: InputBorder.none
+                ),
+              ),
+             ),
+                    SizedBox(width: 15,),
+                    FloatingActionButton(onPressed: (){
+                      sendMessage();
+                    },
+                    child: Icon(Icons.send,color: DARK_GREYISH_BLUE,size: 18,),
+                      backgroundColor: STRONG_CYAN,
+                      elevation: 0,
+                    )
                   ],
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),

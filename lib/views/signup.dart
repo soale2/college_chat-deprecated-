@@ -77,8 +77,11 @@ class _SignUpState extends State<SignUp> {
             child: ListView(
               padding: EdgeInsets.all(20.0),
               children: [
-                Padding(padding: EdgeInsets.all(30),
-                  child: Image.asset("assets/images/circle-logo.png",height: 235,width: 235,),
+                Hero(
+                  tag: 'logo',
+                  child: Padding(padding: EdgeInsets.all(30),
+                    child: Image.asset("assets/images/circle-logo.png",height: 235,width: 235,),
+                  ),
                 ),
                 SizedBox(
                   height: 8,

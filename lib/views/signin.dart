@@ -82,8 +82,11 @@ class _SignInState extends State<SignIn> {
             child: ListView(
               padding: EdgeInsets.all(20.0),
               children: [
-                Padding(padding: EdgeInsets.all(30),
-                  child: Image.asset("assets/images/circle-logo.png",height: 235,width: 235,),
+                Hero(
+                  tag: 'logo',
+                  child: Padding(padding: EdgeInsets.all(35),
+                    child: Image.asset("assets/images/circle-logo.png",height: 235,width: 235,),
+                  ),
                 ),
                 SizedBox(
                   height: 8,
@@ -120,6 +123,11 @@ class _SignInState extends State<SignIn> {
                                 child: TextButton(
                                   onPressed: () {
                                     authMethods.resetPass(emailTextEditingController.text);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text("password to reset email sent"),
+                                      duration: Duration(seconds: 5),
+                                      )
+                                    );
                                   },
                                   child: Text("Forgot Password?", style: simpleTextStyle(),),
                                 ),
