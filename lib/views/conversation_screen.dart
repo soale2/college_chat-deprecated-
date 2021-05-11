@@ -7,13 +7,16 @@ import 'package:college_chat/utils/utilities.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'chatRoomsScreen.dart';
 
 
 class ConversationScreen extends StatefulWidget {
 
   final String chatRoomId;
+  String imageUrl;
   ConversationScreen(this.chatRoomId);
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
@@ -25,7 +28,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   FirebaseStorage storage = FirebaseStorage.instance;
   TextEditingController messageController = new TextEditingController();
   Stream chatMessagesStream;
-  final reference = FirebaseDatabase.instance.reference().child('messages');
+  String _imageUrl;
 
   Widget ChatMessageList(){
     return StreamBuilder(
@@ -49,19 +52,20 @@ class _ConversationScreenState extends State<ConversationScreen> {
         "sendBy" : Constants.myName,
         "time" : DateTime.now().millisecondsSinceEpoch,
         "timeStamp":Timestamp.now(),
+        "imageUrl": _imageUrl,
       };
       databaseMethods.addConversationMessages(widget.chatRoomId,messageMap);
       messageController.text = "";
     }
   }
 
-  void _sendMessage({String messageText ,String imageUrl}){
-    reference.push().set({
-      'message':messageController.text,
-      'imageUrl':imageUrl,
-      'sendBy':Constants.myName
-    });
-  }
+  // void _sendMessage({String messageText ,String imageUrl}){
+  //   reference.push().set({
+  //     'messageText':messageController.text,
+  //     'imageUrl':imageUrl,
+  //     'sendBy':Constants.myName,
+  //   });
+  // }
 
   // getImage({@required ImageSource source}) async{
   //   File selectedImage = await Utils.getImage(source:source);
@@ -117,16 +121,20 @@ class _ConversationScreenState extends State<ConversationScreen> {
                         ),
                         onPressed: () async {
                           final ImagePicker _picker = ImagePicker();
-                          String downloadUrl;
                           PickedFile pickedImage = await _picker.getImage(source: ImageSource.gallery);
                           File imageFile = File(pickedImage.path);
                           int timestamp = new DateTime.now().millisecondsSinceEpoch;
                           Reference storageReference = storage.ref().child("img_" + timestamp.toString() + ".jpg");
                           UploadTask uploadTask = storageReference.putFile(imageFile);
                           uploadTask.whenComplete(() async{
-                            downloadUrl = await storageReference.getDownloadURL();
+                          String downloadUrl = await storageReference.getDownloadURL();
+                          print(downloadUrl.toString());
+                          _imageUrl = downloadUrl.toString();
+                          messageController.text =_imageUrl;
+                           sendMessage();// String downloadUrl = await storageReference.getDownloadURL();
+                                                               //  print(downloadUrl.toString());
                           });
-                          _sendMessage(messageText: null,imageUrl: downloadUrl.toString());
+
                         },
                       ),
                     ),
@@ -164,6 +172,14 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 }
 
+Future<void> _onOpen(LinkableElement link) async {
+  if (await canLaunch(link.url)) {
+    await launch(link.url);
+  } else {
+    throw 'Could not launch $link';
+  }
+}
+
 class MessageTile extends StatelessWidget {
   final String message;
   final bool isSendByMe;
@@ -176,7 +192,7 @@ class MessageTile extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 8),
+        margin: EdgeInsets.only(top: 5,left: 25,bottom: 5),
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -200,10 +216,21 @@ class MessageTile extends StatelessWidget {
             bottomRight: Radius.circular(23),
           )
         ),
-        child: Text(message, style: TextStyle(
-          fontSize: 16,
-        color: WHITE,
-        ),),
+        child:Linkify(
+          onOpen: _onOpen,
+          text: message,
+          style: TextStyle(
+            fontSize: 16,
+            color: WHITE
+          ),
+        )
+
+        //GestureDetector(
+          //child: Text(message, style: TextStyle(
+            //fontSize: 16,
+          //color: WHITE,
+          //),),
+        //),
       ),
     );
   }
