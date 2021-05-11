@@ -8,6 +8,7 @@ import 'package:college_chat/views/calendarScreen.dart';
 import 'package:college_chat/views/conversation_screen.dart';
 import 'package:college_chat/views/search.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ChatRoom extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   AuthMethods authMethods = new AuthMethods();
   DatabaseMethods databaseMethods = new DatabaseMethods();
+
 
   Stream chatRoomsStream;
 
@@ -112,7 +114,9 @@ class _ChatRoomState extends State<ChatRoom> {
                     Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context) => CalenderScreen()));
                   },
-                )
+                ),
+
+
               ],
             ),
           ),

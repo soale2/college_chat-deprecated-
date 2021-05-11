@@ -36,6 +36,12 @@ dependencies:
   googleapis: any
   googleapis_auth: any
   url_launcher: ^6.0.3
+  speech_to_text: ^4.1.1-nullsafety
+  firebase_storage: ^8.0.5
+  image_picker: ^0.7.4
+  path_provider: ^2.0.1
+  image: ^3.0.2
+  firebase_database: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +63,7 @@ flutter:
     - assets/images/circle-logo.png
     - assets/images/search_white.png
     - assets/images/send.png
+    - assets/images/pngwing.com.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

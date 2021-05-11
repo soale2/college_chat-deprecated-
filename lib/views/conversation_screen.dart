@@ -1,7 +1,15 @@
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_chat/constants/colors.dart';
 import 'package:college_chat/helper/constants.dart';
 import 'package:college_chat/services/database.dart';
+import 'package:college_chat/utils/utilities.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'chatRoomsScreen.dart';
+
 
 class ConversationScreen extends StatefulWidget {
 
@@ -14,9 +22,10 @@ class ConversationScreen extends StatefulWidget {
 class _ConversationScreenState extends State<ConversationScreen> {
 
   DatabaseMethods databaseMethods = new DatabaseMethods();
+  FirebaseStorage storage = FirebaseStorage.instance;
   TextEditingController messageController = new TextEditingController();
-
   Stream chatMessagesStream;
+  final reference = FirebaseDatabase.instance.reference().child('messages');
 
   Widget ChatMessageList(){
     return StreamBuilder(
@@ -39,11 +48,28 @@ class _ConversationScreenState extends State<ConversationScreen> {
         "message" : messageController.text,
         "sendBy" : Constants.myName,
         "time" : DateTime.now().millisecondsSinceEpoch,
+        "timeStamp":Timestamp.now(),
       };
       databaseMethods.addConversationMessages(widget.chatRoomId,messageMap);
       messageController.text = "";
     }
   }
+
+  void _sendMessage({String messageText ,String imageUrl}){
+    reference.push().set({
+      'message':messageController.text,
+      'imageUrl':imageUrl,
+      'sendBy':Constants.myName
+    });
+  }
+
+  // getImage({@required ImageSource source}) async{
+  //   File selectedImage = await Utils.getImage(source:source);
+  //   _repository.uploadImage(
+  //     image:selectedImage,
+  //     sendBy:Constants.myName,
+  //   );
+  // }
 
   @override
   void initState() {
@@ -59,7 +85,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
       appBar: AppBar(
-        title: Text('College Chat',
+        title: Text("College Notes",
           style: TextStyle(
             color: WHITE,
             fontSize: 24,
@@ -82,6 +108,28 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 color: DARK_GREYISH_BLUE,
                 child: Row(
                   children: [
+                    Container(
+                      margin: new EdgeInsets.symmetric(horizontal: 4.0),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.photo_camera,
+                          color: STRONG_CYAN,
+                        ),
+                        onPressed: () async {
+                          final ImagePicker _picker = ImagePicker();
+                          String downloadUrl;
+                          PickedFile pickedImage = await _picker.getImage(source: ImageSource.gallery);
+                          File imageFile = File(pickedImage.path);
+                          int timestamp = new DateTime.now().millisecondsSinceEpoch;
+                          Reference storageReference = storage.ref().child("img_" + timestamp.toString() + ".jpg");
+                          UploadTask uploadTask = storageReference.putFile(imageFile);
+                          uploadTask.whenComplete(() async{
+                            downloadUrl = await storageReference.getDownloadURL();
+                          });
+                          _sendMessage(messageText: null,imageUrl: downloadUrl.toString());
+                        },
+                      ),
+                    ),
                     Expanded(child: TextField(
                       controller: messageController,
                       style: TextStyle(

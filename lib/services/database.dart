@@ -41,4 +41,6 @@ class DatabaseMethods{
     return await FirebaseFirestore.instance.collection("ChatRoom")
         .where("users", arrayContains: userName).snapshots();
   }
+
+
 }
