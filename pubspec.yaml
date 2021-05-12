@@ -43,6 +43,7 @@ dependencies:
   image: ^3.0.2
   firebase_database: ^6.1.2
   flutter_linkify: ^5.0.2
+  highlight_text: ^1.0.0
 
 dev_dependencies:
   flutter_test:

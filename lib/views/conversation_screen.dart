@@ -8,9 +8,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:highlight_text/highlight_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'chatRoomsScreen.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 
 class ConversationScreen extends StatefulWidget {
@@ -29,6 +31,41 @@ class _ConversationScreenState extends State<ConversationScreen> {
   TextEditingController messageController = new TextEditingController();
   Stream chatMessagesStream;
   String _imageUrl;
+  stt.SpeechToText _speech;
+  bool _isListening = false;
+  String _text = 'Press the button and start speaking';
+  double _confidence = 1.0;
+  final Map<String,HighlightedWord> _highlights ={
+    'timetable' : HighlightedWord(
+      textStyle: const TextStyle(
+        color: Colors.red
+      ), onTap: () {
+    }
+    )
+  };
+
+  void _listen() async{
+    if(!_isListening){
+      bool available = await _speech.initialize(
+        onStatus: (val) => print('onStatus: $val'),
+        onError: (val) => print('onError: $val'),
+      );
+      if(available){
+        setState(() => _isListening = true);
+        _speech.listen(
+          onResult: (val) => setState((){
+            messageController.text = val.recognizedWords;
+            if(val.hasConfidenceRating && val.confidence > 0){
+              _confidence = val.confidence;
+            }
+          }),
+        );
+      }
+    }else{
+      setState(() => _isListening = false);
+      _speech.stop();
+    }
+  }
 
   Widget ChatMessageList(){
     return StreamBuilder(
@@ -83,6 +120,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       });
     });
     super.initState();
+    _speech = stt.SpeechToText();
   }
 
   @override
@@ -96,6 +134,17 @@ class _ConversationScreenState extends State<ConversationScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: FloatingActionButton(
+              onPressed: _listen,
+            child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+              backgroundColor: STRONG_CYAN,
+              
+            ),
+          )
+        ],
         elevation: 0,
         backgroundColor: VERY_DARK_BLUE,
       ),
@@ -168,9 +217,13 @@ class _ConversationScreenState extends State<ConversationScreen> {
         ),
       ),
     ),
+
     );
+
   }
 }
+
+
 
 Future<void> _onOpen(LinkableElement link) async {
   if (await canLaunch(link.url)) {
@@ -219,9 +272,14 @@ class MessageTile extends StatelessWidget {
         child:Linkify(
           onOpen: _onOpen,
           text: message,
+          textScaleFactor: 1,
           style: TextStyle(
             fontSize: 16,
             color: WHITE
+          ),
+          linkStyle: TextStyle(
+            color: VERY_DARK_BLUE,
+            fontSize: 16,
           ),
         )
 
