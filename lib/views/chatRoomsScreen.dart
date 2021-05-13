@@ -6,6 +6,7 @@ import 'package:college_chat/services/auth.dart';
 import 'package:college_chat/services/database.dart';
 import 'package:college_chat/views/calendarScreen.dart';
 import 'package:college_chat/views/conversation_screen.dart';
+import 'package:college_chat/views/noteScreen.dart';
 import 'package:college_chat/views/search.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -113,6 +114,13 @@ class _ChatRoomState extends State<ChatRoom> {
                   onTap: (){
                     Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context) => CalenderScreen()));
+                  },
+                ),
+                ListTile(
+                  title: Text('Notes',style: TextStyle(fontSize: 16,color: WHITE),),
+                  onTap: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) => NoteScreen()));
                   },
                 ),
 

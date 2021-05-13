@@ -137,12 +137,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
         actions: [
           Padding(
             padding: EdgeInsets.all(8),
-            child: FloatingActionButton(
-              onPressed: _listen,
-            child: Icon(_isListening ? Icons.mic : Icons.mic_none),
-              backgroundColor: STRONG_CYAN,
-              
-            ),
+
           )
         ],
         elevation: 0,
@@ -162,7 +157,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 child: Row(
                   children: [
                     Container(
-                      margin: new EdgeInsets.symmetric(horizontal: 4.0),
+                      padding: new EdgeInsets.symmetric(horizontal: 1.0),
                       child: IconButton(
                         icon: Icon(
                           Icons.photo_camera,
@@ -185,6 +180,18 @@ class _ConversationScreenState extends State<ConversationScreen> {
                           });
 
                         },
+                      ),
+
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(right: 5),
+                      child: FloatingActionButton(
+
+                        elevation: 0,
+                        onPressed: _listen,
+                        child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+                        backgroundColor: STRONG_CYAN,
+
                       ),
                     ),
                     Expanded(child: TextField(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import 'chatRoomsScreen.dart';
+import 'noteScreen.dart';
 
 class CalenderScreen extends StatefulWidget {
   const CalenderScreen({Key key}) : super(key: key);
@@ -59,7 +60,14 @@ class _CalenderScreenState extends State<CalenderScreen> {
                     Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context) => CalenderScreen()));
                   },
-                )
+                ),
+                ListTile(
+                  title: Text('Notes',style: TextStyle(fontSize: 16,color: WHITE),),
+                  onTap: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) => NoteScreen()));
+                  },
+                ),
               ],
             ),
           ),
