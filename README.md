@@ -95,8 +95,8 @@ Contributions are what make the open source community such an amazing place to b
 ## Contact
   This repository is owned and maintained by:
   
-	* [Sohail Alekar](https://github.com/Glonk-0)
- 	* [Devansh Upadhyay](https://github.com/DevanshUpadhyay26)
+* [Sohail Alekar](https://github.com/Glonk-0)
+* [Devansh Upadhyay](https://github.com/DevanshUpadhyay26)
 
 Project Link: [https://github.com/Glonk-0/college_chat](https://github.com/Glonk-0/college_chat)
 
