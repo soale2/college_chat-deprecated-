@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/Glonk-0/college_chat">
-    <img src="android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="Logo" width="80" height="80">
+    <img src="assets/images/circle-logo.png" alt="Logo" width="80" height="80">
   </a>
  <h3 align="center">College Chat</h3>
 
