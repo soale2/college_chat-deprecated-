@@ -31,8 +31,6 @@
     <li>
       <a href="#installation">Installation</a></li>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -93,16 +91,11 @@ Contributions are what make the open source community such an amazing place to b
 5. Open a Pull Request
 
 
+<!-- CONTACT -->
+## Contact
+  This repository is owned and maintained by 
+	* [Sohail Alekar](https://github.com/Glonk-0)
+ 	* [Devansh Upadhyay](https://github.com/DevanshUpadhyay26)
 
+Project Link: [https://github.com/Glonk-0/college_chat](https://github.com/Glonk-0/college_chat)
 
-
-
-
-
-
-
-
-## Maintainers and Developers
-This repository is owned and maintained by 
- * [Sohail Alekar](https://github.com/Glonk-0)
- * [Devansh Upadhyay](https://github.com/DevanshUpadhyay26)
