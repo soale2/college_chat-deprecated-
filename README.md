@@ -93,7 +93,8 @@ Contributions are what make the open source community such an amazing place to b
 
 <!-- CONTACT -->
 ## Contact
-  This repository is owned and maintained by 
+  This repository is owned and maintained by:
+  
 	* [Sohail Alekar](https://github.com/Glonk-0)
  	* [Devansh Upadhyay](https://github.com/DevanshUpadhyay26)
 
