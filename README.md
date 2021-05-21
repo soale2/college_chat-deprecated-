@@ -43,17 +43,17 @@
 <img src = "gitimages/signin.jpg" width="235" height="500"/> <img src = "gitimages/register.jpg" width="235" height="500"/> 
 
   ### Chat  
-//info about chat
+Users can One-on-One chat, share images and use speech to text to write without a keyboard. 
 
 <img src = "gitimages/chat.jpg" width="235" height="500"/>
 
   ### Notes  
-//info about notes
+Users can create and delete sticky notes.
 
 <img src = "gitimages/notes.jpg" width="235" height="500"/>
 
   ### Timetable
-//info about timetable
+Users can setup any reminders, events, multiple-day events using the timetable module.
 
 <img src = "gitimages/timetable.jpg" width="235" height="500"/>
 
